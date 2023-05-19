@@ -11,9 +11,8 @@
  * @return {Function}
  */
 var compose = function(functions) {
-	return function(x) {
-        
-    }
+	return x =>
+        functions.reduceRight((acc,f)=>f(acc),x)
 };
 
 /**
