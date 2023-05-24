@@ -4,3 +4,25 @@
 
 // For instance, t = 50ms, and the function was called at 30ms, 40ms, and 60ms. The first function call would block calling functions for the following t milliseconds. The second function call would save arguments, and the third call arguments should overwrite currently stored arguments from the second call because the second and third calls are called before 80ms. Once the delay has passed, the throttled function should be called with the latest arguments provided during the delay period, and it should also create another delay period of 80ms + t.
 
+var throttle = function(fn, t) {
+    let timerId;
+    let lastArgs;
+    let shouldCall = true;
+  
+    function execute() {
+      if (shouldCall && lastArgs) {
+        fn(...lastArgs);
+        lastArgs = null;
+        shouldCall = false;
+        setTimeout(() => {
+          shouldCall = true;
+          execute();
+        }, t);
+      }
+    }
+  
+    return function(...args) {
+      lastArgs = args;
+      execute();
+    };
+  };
